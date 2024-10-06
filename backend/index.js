@@ -1,29 +1,22 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config({});
 
 const app = express();
-const PORT =3000;
-
-app.get("/home",(req,res)=>{
-  res.status(200).json({
-    message:"Hi dude you are on perfect pace keep it up",
-    success:true
-  })
-})
+const PORT = process.env.PORT || 3000;
 
 //middleware
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const corsOptions={
-  origin :"http//localhost:5173",
-  credentials:true
+const corsOptions = {
+  origin: "http//localhost:5173",
+  credentials: true,
 };
 app.use(cors(corsOptions));
 
-
-
-app.listen(PORT,()=>{
+app.listen(PORT, () => {
   console.log(`server running in the port ${PORT}`);
-})
+});
