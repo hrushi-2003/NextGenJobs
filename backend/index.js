@@ -3,10 +3,10 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDb from "./utils/db.js";
+import router from "./routes/user.route.js";
 dotenv.config({});
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 //middleware
 app.use(express.json());
@@ -17,6 +17,10 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+
+const PORT = process.env.PORT || 3000;
+
+app.use("api/v1/user",router);
 
 app.listen(PORT, () => {
   console.log(`server running in the port ${PORT}`);
