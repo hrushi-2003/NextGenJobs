@@ -19,6 +19,5 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.listen(PORT, () => {
-  connectDb();
   console.log(`server running in the port ${PORT}`);
 });
