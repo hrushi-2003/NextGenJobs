@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 const  CompanySchema =new mongoose.Schema({
   ComanyName:{
     type:String,
-    required:true
+    required:true,
+    unique:true
   },
   descrption:{
     type:String,
