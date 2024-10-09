@@ -10,6 +10,7 @@ export const postJob = async (req, res) => {
       salary,
       jobType,
       experience,
+      location,
       position,
       companyId,
     } = req.body;
@@ -21,6 +22,7 @@ export const postJob = async (req, res) => {
       !salary ||
       !jobType ||
       !experience ||
+      !location ||
       !position ||
       !companyId
     ) {
@@ -36,7 +38,8 @@ export const postJob = async (req, res) => {
       salary: Number(salary),
       jobType,
       experienceLevel: experience,
-      position,
+      location: location,
+      positions: position,
       company: companyId,
       created_by: userId,
     });
@@ -59,7 +62,11 @@ export const getAllJobs = async (req, res) => {
         { description: { $regex: keyword, $options: "i" } },
       ],
     };
-    const jobs = await Job.find(query);
+    const jobs = await Job.find(query)
+      .populate({
+        path: "company",
+      })
+      .sort({ createdAt: -1 });
     if (!jobs) {
       return res.status(404).json({
         message: "jobs not found",
@@ -75,7 +82,7 @@ export const getAllJobs = async (req, res) => {
   }
 };
 
-//  for student 
+//  for student
 export const getJobById = async (req, res) => {
   try {
     const jobId = req.params.id;
@@ -96,24 +103,21 @@ export const getJobById = async (req, res) => {
 };
 
 // for admin
-export const getAdminJobs = async(req,res)=>
-{
+export const getAdminJobs = async (req, res) => {
   try {
     const adminId = req.id;
-    const jobs= Job.findById({created_by:adminId});
-    if(!jobs){
+    const jobs = Job.findById({ created_by: adminId });
+    if (!jobs) {
       return res.status(404).json({
-        message:"jobs not found",
-        success:true
-      })
+        message: "jobs not found",
+        success: true,
+      });
     }
     return res.status(200).json({
       jobs,
-      success:true
-    })
+      success: true,
+    });
   } catch (error) {
     console.log(error);
   }
-}
-
-
+};
